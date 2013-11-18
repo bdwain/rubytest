@@ -208,17 +208,17 @@ end
 # error handling, logging, and timeout handling. Design a block helper method that will remove
 # the duplication, and refactor the code to use the block helper.
 
-def helper(logger, startString, timeout, action)
+def helper(logger, startString, timeout)
   logger.info startString
   Timeout::timeout(timeout) do
     begin
-      action
+      yield
     rescue => e
       logger.error "Got error: #{e.message}"
     end
   end
 end
 
-helper(logger, "About to do action1", 5, action1)
-helper(logger, "About to do action2", 10, action2)
-helper(logger, "About to do action3", 7, action3)
+helper(logger, "About to do action1", 5) {action1}
+helper(logger, "About to do action2", 10) {action2}
+helper(logger, "About to do action3", 7) {action3}
